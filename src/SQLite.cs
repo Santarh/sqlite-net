@@ -1986,7 +1986,7 @@ namespace SQLite
                 IsNullable = !(IsPK || Orm.IsMarkedNotNull(prop));
                 MaxStringLength = Orm.MaxStringLength(prop);
 
-                StoreAsText = prop.PropertyType.GetTypeInfo().GetCustomAttribute(typeof(StoreAsTextAttribute), false) != null;
+                StoreAsText = prop.PropertyType.GetCustomAttributes(typeof(StoreAsTextAttribute), false).Length > 0;
             }
 
 			public void SetValue (object obj, object val)
@@ -2359,7 +2359,7 @@ namespace SQLite
 #else
 				} else if (value.GetType().GetTypeInfo().IsEnum) {
 #endif
-                    if (value.GetType().GetTypeInfo().GetCustomAttribute(typeof(StoreAsTextAttribute), false) != null)
+                    if (value.GetType().GetCustomAttributes(typeof(StoreAsTextAttribute), false).Length > 0)
                         SQLite3.BindText(stmt, index, value.ToString(), -1, NegativePointer);
                     else
                         SQLite3.BindInt (stmt, index, Convert.ToInt32 (value));
